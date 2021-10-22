@@ -1,0 +1,22 @@
+version: '3.3'
+
+services:
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+
+  app:
+    image: app
+    build:
+      context: .
+    env_file:
+      - .env
+    environment:
+      PORT: 3000
+      DB_HOST: db
+    ports:
+    - "3000:3000"

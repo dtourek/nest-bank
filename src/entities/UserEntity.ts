@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import PaymentEntity from './PaymentEntity';
+import { Nullable } from '../interfaces';
 
 @Entity()
 class UserEntity {
@@ -10,6 +12,9 @@ class UserEntity {
 
   @Column({ type: 'text', nullable: false })
   password: string;
+
+  @OneToMany(() => PaymentEntity, (payment) => payment.owner, { nullable: true })
+  payments?: Nullable<PaymentEntity[]>;
 }
 
 export default UserEntity;

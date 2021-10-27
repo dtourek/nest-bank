@@ -1,35 +1,29 @@
-import { Injectable } from '@nestjs/common';
-import UserEntity from '../../entities/UserEntity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { RegisterUserDto } from './dto/registerUserDto';
-import { Left, Maybe, Right } from 'fputils';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { UsersService } from '../users/users.service';
+import { JwtService } from '@nestjs/jwt';
+import { ITokenUser } from '../../interfaces';
+
+interface ITokenPayload {
+  accessToken: string;
+}
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(UserEntity)
-    private usersRepository: Repository<UserEntity>,
+    @Inject(forwardRef(() => UsersService))
+    private usersService: UsersService,
+    private readonly jwtService: JwtService,
   ) {}
 
-  register = async ({ username, password }: RegisterUserDto): Promise<Maybe<UserEntity>> => {
-    try {
-      const exists = await this.usersRepository.findOne({ where: { username } });
-      if (exists) {
-        console.log(`User ${username} already exist!`);
-        return Left(new Error(`User with same username: ${username} already exist!`));
-      }
-
-      const user = new UserEntity();
-      user.username = username;
-      user.password = password;
-
-      const result = await this.usersRepository.save(user);
-
-      console.log(`User ${result.username} register success`);
-      return Right(result);
-    } catch (error) {
-      return Left(new Error(`Failed to create user: ${error.message}`));
+  async validateUser(username: string, password: string): Promise<ITokenUser | null> {
+    const user = await this.usersService.findUser(username);
+    if (user && user.password === password) {
+      return { username: user.username, userId: user.id };
     }
-  };
+    return null;
+  }
+
+  login = ({ username, userId }: ITokenUser): ITokenPayload => ({
+    accessToken: this.jwtService.sign({ username, sub: userId }),
+  });
 }

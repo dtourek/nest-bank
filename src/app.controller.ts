@@ -1,4 +1,4 @@
-import { Controller, Request, Post, UseGuards, Get, Body, HttpException, HttpStatus, Logger } from '@nestjs/common';
+import { Controller, Request, Post, UseGuards, Body, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { AuthService } from './modules/auth/auth.service';
 import { ICommonAuthenticatedRequest } from './interfaces';
 import { UsersService } from './modules/users/users.service';

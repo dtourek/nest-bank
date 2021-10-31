@@ -28,7 +28,7 @@ describe('UsersService', () => {
       });
       const result = await service.create({ username: user.username, password: user.password });
       expect(isLeft(result)).toEqual(true);
-      expect(result.value).toEqual(Error('Failed to create user: Connect to database failed!'));
+      expect(result.value).toEqual(Error('Failed to get user: user'));
     });
 
     it('should fail to register user when username is already taken', async () => {

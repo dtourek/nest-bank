@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RegisterUserDto } from './dto/registerUserDto';
 import { isLeft, Left, Maybe, Right, tryCatch } from 'fputils';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -27,11 +28,11 @@ export class UsersService {
       return Left(new Error(`User with same username: ${username} already exist!`));
     }
 
-    const user = new UserEntity();
-    user.username = username;
-    user.password = password;
-
     try {
+      const user = new UserEntity();
+      user.username = username;
+      user.password = await bcrypt.hash(password, 10);
+
       const result = await this.usersRepository.save(user);
       this.logger.log(`User ${result.username} registered successfully`);
 

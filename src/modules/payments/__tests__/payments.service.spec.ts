@@ -183,7 +183,7 @@ describe('PaymentsService', () => {
         fail(`Should not success`);
       }
 
-      expect(result.value).toEqual(Error('Failed to delete payment with ID: 3, because it was not found'));
+      expect(result.value).toEqual(Error('Failed to remove payment with ID: 3, because it was not found'));
     });
 
     it('should success to delete', async () => {

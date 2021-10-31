@@ -17,6 +17,7 @@ if (process.env.NODE_ENV === 'development') {
   process.env.DB_PORT = '5432';
   process.env.DB_USERNAME = 'postgres';
   process.env.DB_PASSWORD = 'postgres';
+  process.env.JWT_SECRET = 'someSecretStuffLikePassword123';
 }
 
 interface IDatabase {
@@ -29,24 +30,18 @@ interface IDatabase {
   synchronize: true;
 }
 
-interface IConfig {
-  db: IDatabase;
-}
-
-const config: IConfig = {
-  db: {
-    type: 'postgres',
-    host: getEnvironmentVariable('DB_HOST'),
-    port: Number(getEnvironmentVariable('DB_PORT')),
-    username: getEnvironmentVariable('DB_USERNAME'),
-    password: getEnvironmentVariable('DB_PASSWORD'),
-    entities: [UserEntity, PaymentEntity],
-    synchronize: true,
-  },
+const databaseConfig: IDatabase = {
+  type: 'postgres',
+  host: getEnvironmentVariable('DB_HOST'),
+  port: Number(getEnvironmentVariable('DB_PORT')),
+  username: getEnvironmentVariable('DB_USERNAME'),
+  password: getEnvironmentVariable('DB_PASSWORD'),
+  entities: [UserEntity, PaymentEntity],
+  synchronize: true,
 };
 
 @Module({
-  imports: [ConfigModule.forRoot(), TypeOrmCoreModule.forRoot(config.db), AuthModule, UsersModule, PaymentsModule],
+  imports: [ConfigModule.forRoot(), TypeOrmCoreModule.forRoot(databaseConfig), AuthModule, UsersModule, PaymentsModule],
   controllers: [AppController],
   providers: [
     {

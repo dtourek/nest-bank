@@ -3,7 +3,6 @@ import { AuthService } from '../auth.service';
 import { UsersModule } from '../../users/usersModule';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from '../constants';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import UserEntity from '../../../entities/UserEntity';
 import { MockType, repositoryMockFactory } from '../../../testHelpers';
@@ -28,7 +27,7 @@ xdescribe('AuthService', () => {
         UsersModule,
         PassportModule,
         JwtModule.register({
-          secret: jwtConstants.secret,
+          secret: 'someSecretStuffLikePassword123',
           signOptions: { expiresIn: '60s' },
         }),
       ],

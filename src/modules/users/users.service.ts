@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import UserEntity from '../../entities/UserEntity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RegisterUserDto } from './dto/registerUserDto';
-import { Left, Maybe, Right } from 'fputils';
+import { isLeft, Left, Maybe, Right, tryCatch } from 'fputils';
 
 @Injectable()
 export class UsersService {
@@ -11,28 +11,36 @@ export class UsersService {
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
   ) {}
+  private readonly logger = new Logger('UserService');
 
   create = async ({ username, password }: RegisterUserDto): Promise<Maybe<UserEntity>> => {
+    const exists = await this.findUser(username);
+
+    if (isLeft(exists)) {
+      const errorMessage = `Failed to get user: ${username}`;
+      this.logger.error(errorMessage);
+      return Left(new Error(errorMessage));
+    }
+
+    if (exists.value) {
+      this.logger.error(`User ${username} already exist!`);
+      return Left(new Error(`User with same username: ${username} already exist!`));
+    }
+
+    const user = new UserEntity();
+    user.username = username;
+    user.password = password;
+
     try {
-      const exists = await this.findUser(username);
-      if (exists) {
-        console.log(`User ${username} already exist!`);
-        return Left(new Error(`User with same username: ${username} already exist!`));
-      }
-
-      const user = new UserEntity();
-      user.username = username;
-      user.password = password;
-
       const result = await this.usersRepository.save(user);
+      this.logger.log(`User ${result.username} registered successfully`);
 
-      console.log(`User ${result.username} registered successfully`);
       return Right(result);
     } catch (error) {
-      console.log(`Failed to create user ${error.message}`);
+      this.logger.error(`Failed to create user ${error.message}`);
       return Left(new Error(`Failed to create user: ${error.message}`));
     }
   };
 
-  findUser = async (username: string) => await this.usersRepository.findOne({ where: { username } });
+  findUser = async (username: string): Promise<Maybe<UserEntity | undefined>> => tryCatch(async () => this.usersRepository.findOne({ where: { username } }));
 }

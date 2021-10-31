@@ -7,6 +7,3 @@ export const getEnvironmentVariable = (name: EnvironmentVariables): string | und
   }
   return value;
 };
-
-type LoggerType = 'debug' | 'info' | 'error';
-export const logger = (type: LoggerType, ...rest) => console.log([new Date().toUTCString(), type, ...rest].join('|'));

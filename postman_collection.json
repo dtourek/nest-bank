@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "9a6310e3-e597-48b6-a562-2eb9bfb2ff7d",
+		"name": "nest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\": \"user\", \"password\": \"password\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/login",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "payments",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwic3ViIjoyLCJpYXQiOjE2MzU3MTMwMjUsImV4cCI6MTYzNTcxNjYyNX0.wbMjhz02PPIKnOlUvAwK2V5DjGjlVsCciGD-YrbznR0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/payments",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"payments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "payment detail",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwic3ViIjoyLCJpYXQiOjE2MzU3MTIzNjYsImV4cCI6MTYzNTcxNTk2Nn0.1b8gf5HvsD0B2Fu7OeePIEiukPn2C0xb55OPxHE3EB0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/payments/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"payments",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create payment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwic3ViIjoyLCJpYXQiOjE2MzU3MTMwMjUsImV4cCI6MTYzNTcxNjYyNX0.wbMjhz02PPIKnOlUvAwK2V5DjGjlVsCciGD-YrbznR0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 1000,\n    \"description\": \"description\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/payments",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"payments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update payment",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJ4Iiwic3ViIjo2NCwiaWF0IjoxNjM1MzY1MzMyLCJleHAiOjE2MzUzNjg5MzJ9.7MW8JlYodqAvhnnwOhTjqge2FPir5IR3QR5OdKRGq0w",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 1222,\n    \"description\": \"updated2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/payments/8",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"payments",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete payment",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJ4Iiwic3ViIjo2NCwiaWF0IjoxNjM1MzY1MzMyLCJleHAiOjE2MzUzNjg5MzJ9.7MW8JlYodqAvhnnwOhTjqge2FPir5IR3QR5OdKRGq0w",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/payments/8",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"payments",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJzdWIiOjEsImlhdCI6MTYzNDkyMzY2MSwiZXhwIjoxNjM0OTI3MjYxfQ.FoFxeMxl--rXy9IjYxtmnIbX0WSm5GVPf3JH54I_0mw",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"user1\",\n    \"password\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/register",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

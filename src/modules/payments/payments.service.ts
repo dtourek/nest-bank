@@ -22,8 +22,9 @@ export class PaymentsService {
     try {
       const user = await this.usersRepository.findOne({ where: { username } });
       if (!user) {
-        this.logger.error(`Failed to create payment, user not found`);
-        return Left(new Error(`Cannot create payment, user ${username} not found!`));
+        const errorMessage = `Failed to create payment, user not found`;
+        this.logger.error(errorMessage);
+        return Left(new Error(errorMessage));
       }
 
       const payment = new PaymentEntity();
@@ -32,8 +33,8 @@ export class PaymentsService {
       payment.amount = amount;
 
       const result = await this.paymentsRepository.save(payment);
-      this.logger.log(`Payment created successfully for user ${username}`);
 
+      this.logger.log(`Payment created successfully for user ${username}`);
       return Right(result);
     } catch (error) {
       this.logger.error(`Failed to create payment`, error);
@@ -44,11 +45,11 @@ export class PaymentsService {
   findMany = async (username: string): Promise<Maybe<PaymentEntity[]>> => {
     try {
       const result = await this.paymentsRepository.find({ relations: ['owner'], where: { owner: { username } } });
+
       this.logger.log(`Get user ${username} payments succeeded`);
       return Right(result);
     } catch (error) {
-      const errorMessage = `Failed to get user ${username} payments`;
-      this.logger.error(errorMessage, error);
+      this.logger.error(`Failed to get user ${username} payments`, error);
       return Left(error);
     }
   };
@@ -57,10 +58,11 @@ export class PaymentsService {
     try {
       const result = await this.findPaymentByOwner(id, username);
       if (!result) {
-        const message = `Failed to get payment detail with ID: ${id}. Payment not found`;
-        this.logger.error(message);
-        return Left(new Error(message));
+        const errorMessage = `Failed to get payment detail with ID: ${id}. Payment not found`;
+        this.logger.error(errorMessage);
+        return Left(new Error(errorMessage));
       }
+
       this.logger.debug(`Get payment detail with ID: ${id} succeeded`);
       return Right(result);
     } catch (error) {
@@ -73,9 +75,11 @@ export class PaymentsService {
     try {
       const payment = await this.findPaymentByOwner(id, username);
       if (!payment) {
-        this.logger.error(`Failed to update payment with ID: ${id}, because payment not found!`);
-        return Left(new Error(`Failed to update payment with ID: ${id}`));
+        const errorMessage = `Failed to update payment with ID: ${id}, because payment not found!`;
+        this.logger.error(errorMessage);
+        return Left(new Error(errorMessage));
       }
+
       payment.description = description ?? payment.description;
       payment.amount = amount ?? payment.amount;
 
@@ -98,8 +102,9 @@ export class PaymentsService {
         return Left(new Error(errorMessage));
       }
 
-      this.logger.log(`Remove of payment with ID: ${id} succeeded`);
       const result = await this.paymentsRepository.remove(payment);
+
+      this.logger.log(`Remove of payment with ID: ${id} succeeded`);
       return Right(result);
     } catch (error) {
       this.logger.error(`Failed to remove payment with ID: ${id}`, error);

@@ -21,7 +21,7 @@ describe('UsersService', () => {
     repositoryMock = module.get(getRepositoryToken(UserEntity));
   });
 
-  describe('register', () => {
+  describe('create', () => {
     it('should throw error and fallback to catch block', async () => {
       repositoryMock.findOne.mockImplementation(() => {
         throw new Error('Connect to database failed!');
@@ -31,7 +31,7 @@ describe('UsersService', () => {
       expect(result.value).toEqual(Error('Failed to get user: user'));
     });
 
-    it('should fail to register user when username is already taken', async () => {
+    it('should fail to create user when username is already taken', async () => {
       repositoryMock.findOne.mockReturnValueOnce(user);
       repositoryMock.save.mockReturnValueOnce(user);
 
@@ -40,7 +40,7 @@ describe('UsersService', () => {
       expect(result.value).toEqual(Error('User with same username: user already exist!'));
     });
 
-    it('should success to register user', async () => {
+    it('should create user', async () => {
       repositoryMock.findOne.mockReturnValueOnce(undefined);
       repositoryMock.save.mockReturnValueOnce(user);
 

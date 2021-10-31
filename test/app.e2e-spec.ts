@@ -8,6 +8,10 @@ import { AuthService } from '../src/modules/auth/auth.service';
 import { ILeft, IRight } from 'fputils';
 import { AppController } from '../src/app.controller';
 import { UsersService } from '../src/modules/users/users.service';
+import PaymentEntity from '../src/entities/PaymentEntity';
+import { LocalStrategy } from '../src/modules/auth/local/local.strategy';
+import { JwtStrategy } from '../src/modules/auth/jwt/jwt.strategy';
+import { JwtService } from '@nestjs/jwt';
 
 // TODO - fix this
 xdescribe('AppController (e2e)', () => {
@@ -18,7 +22,15 @@ xdescribe('AppController (e2e)', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [UsersService, { provide: getRepositoryToken(UserEntity), useFactory: repositoryMockFactory }],
+      providers: [
+        AuthService,
+        UsersService,
+        LocalStrategy,
+        JwtStrategy,
+        JwtService,
+        { provide: getRepositoryToken(PaymentEntity), useFactory: repositoryMockFactory },
+        { provide: getRepositoryToken(UserEntity), useFactory: repositoryMockFactory },
+      ],
     }).compile();
 
     controller = module.get<AppController>(AppController);

@@ -45,7 +45,7 @@ describe('PaymentsService', () => {
       userRepository.findOne.mockResolvedValueOnce(undefined);
 
       const result = await service.create('user', { amount: 5, description: 'Coffee' });
-      expect(isLeft(result) && result.value).toEqual(Error('Cannot create payment, user user not found!'));
+      expect(isLeft(result) && result.value).toEqual(Error('Failed to create payment, user not found'));
     });
 
     it('should success to create payment', async () => {
@@ -140,7 +140,7 @@ describe('PaymentsService', () => {
       if (isRight(result)) {
         fail('Should not success, user differs');
       }
-      expect(result.value).toEqual(Error('Failed to update payment with ID: 1'));
+      expect(result.value).toEqual(Error('Failed to update payment with ID: 1, because payment not found!'));
     });
 
     it('should success to update payment', async () => {
